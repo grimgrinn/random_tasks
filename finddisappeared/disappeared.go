@@ -4,33 +4,23 @@ import "fmt"
 
 func main() {
 
-	// nums := []int{4, 3, 2, 7, 8, 2, 3, 1}
-	nums := []int{1, 1}
+	nums1 := []int{4, 3, 2, 7, 8, 2, 3, 1}
+	//nums := []int{1, 1}
 
-	arr := make([]int, len(nums))
+	seen := make(map[int]bool)
 
-	ans := []int{}
-	fmt.Println(len(nums))
-	fmt.Println(arr)
-	fmt.Println(nums)
+	for _, n := range nums1 {
+		seen[n] = true
+		fmt.Println(seen)
+	}
 
-	isin := make(map[int]int)
+	result := []int{}
 
-	for i, n := range nums {
-
-		if _, exists := isin[n]; !exists {
-			isin[n] = i
-
-			// fmt.Println(isin)
-		} else {
-			fmt.Println(i, "!")
-			ans = append(ans, i)
-
+	for i := 1; i <= len(nums1); i++ {
+		if !seen[i] {
+			result = append(result, i)
 		}
 	}
 
-	fmt.Println(isin)
-
-	fmt.Println(ans)
-
+	fmt.Printf("%v", result)
 }
