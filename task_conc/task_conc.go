@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"sync"
 	"time"
 )
 
@@ -16,25 +15,22 @@ func randomWait() int {
 }
 
 func main() {
-	wg := &sync.WaitGroup{}
-	locker := &sync.Mutex{}
+	ch := make(chan int)
 	totalWorkSeconds := 0
 
 	start := time.Now()
 
-	wg.Add(100)
 	for range 100 {
 		go func() {
-			defer wg.Done()
 			seconds := randomWait()
 
-			locker.Lock()
-			totalWorkSeconds += seconds
-			locker.Unlock()
+			ch <- seconds
 		}()
 	}
 
-	wg.Wait()
+	for range 100 {
+		totalWorkSeconds += <-ch
+	}
 
 	mainSeconds := time.Since(start)
 	fmt.Println("main", mainSeconds)
